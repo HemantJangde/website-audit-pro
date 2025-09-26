@@ -1,0 +1,78 @@
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    console.log("Logging in:", email, password);
+    navigate("/"); // redirect after login
+  };
+
+  return (
+    <div className="relative flex justify-center items-center min-h-screen bg-gradient-to-tr from-yellow-100 via-yellow-50 to-yellow-200 overflow-hidden">
+      {/* Floating shapes */}
+      <motion.div
+        className="absolute w-72 h-72 bg-yellow-200 rounded-full opacity-20 top-[-50px] left-[-50px]"
+        animate={{ y: [0, 20, 0] }}
+        transition={{ repeat: Infinity, duration: 6 }}
+      />
+      <motion.div
+        className="absolute w-64 h-64 bg-yellow-300 rounded-full opacity-15 bottom-[-40px] right-[-40px]"
+        animate={{ y: [0, -15, 0] }}
+        transition={{ repeat: Infinity, duration: 5 }}
+      />
+
+      {/* Form card */}
+      <motion.div
+        initial={{ opacity: 0, y: -50, scale: 0.9 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.6 }}
+        className="relative bg-white rounded-2xl shadow-2xl p-10 w-full max-w-md z-10"
+      >
+        <h1 className="text-4xl font-bold text-yellow-700 mb-6 text-center">Login</h1>
+
+        <form onSubmit={handleLogin} className="space-y-4">
+          <motion.input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="input input-bordered w-full border-yellow-300 focus:border-yellow-500 text-yellow-900"
+            whileFocus={{ scale: 1.02, boxShadow: "0px 0px 8px rgba(250,204,21,0.5)" }}
+          />
+          <motion.input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="input input-bordered w-full border-yellow-300 focus:border-yellow-500 text-yellow-900"
+            whileFocus={{ scale: 1.02, boxShadow: "0px 0px 8px rgba(250,204,21,0.5)" }}
+          />
+          <motion.button
+            type="submit"
+            className="btn bg-yellow-500 hover:bg-yellow-600 text-white w-full mt-4 shadow-lg"
+            whileHover={{ scale: 1.05, boxShadow: "0px 0px 12px rgba(250,204,21,0.7)" }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Login
+          </motion.button>
+        </form>
+
+        <p className="mt-4 text-center text-yellow-800 font-semibold">
+          Don’t have an account?{" "}
+          <span
+            className="cursor-pointer underline hover:text-yellow-900"
+            onClick={() => navigate("/signup")}
+          >
+            Sign Up
+          </span>
+        </p>
+      </motion.div>
+    </div>
+  );
+}
