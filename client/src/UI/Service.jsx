@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export default function Service() {
   return (
-    <div className="flex justify-center border bg-yellow-50/20">
+    <div className="flex justify-center  bg-yellow-50/20">
       <figure className="diff aspect-video w-full  rounded-xl overflow-hidden shadow-lg">
         {/* Left Side: Before Optimization */}
         <motion.div
