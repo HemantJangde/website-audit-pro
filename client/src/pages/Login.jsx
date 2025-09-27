@@ -5,12 +5,36 @@ import { useNavigate } from "react-router-dom";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Logging in:", email, password);
-    navigate("/"); // redirect after login
+    setError("");
+
+    try {
+      const res = await fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message || "Login failed");
+        return;
+      }
+
+      console.log("Login success:", data);
+      // you can store user info in localStorage if needed
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      navigate("/"); // redirect after login
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong. Try again.");
+    }
   };
 
   return (
@@ -44,6 +68,7 @@ export default function LoginPage() {
             onChange={(e) => setEmail(e.target.value)}
             className="input input-bordered w-full border-yellow-300 focus:border-yellow-500 text-yellow-900"
             whileFocus={{ scale: 1.02, boxShadow: "0px 0px 8px rgba(250,204,21,0.5)" }}
+            required
           />
           <motion.input
             type="password"
@@ -52,7 +77,9 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             className="input input-bordered w-full border-yellow-300 focus:border-yellow-500 text-yellow-900"
             whileFocus={{ scale: 1.02, boxShadow: "0px 0px 8px rgba(250,204,21,0.5)" }}
+            required
           />
+          {error && <p className="text-red-500 text-sm">{error}</p>}
           <motion.button
             type="submit"
             className="btn bg-yellow-500 hover:bg-yellow-600 text-white w-full mt-4 shadow-lg"

@@ -6,12 +6,39 @@ export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const navigate = useNavigate();
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-    console.log("Signing up:", name, email, password);
-    navigate("/login"); // redirect to login after signup
+    setError("");
+    setSuccess("");
+
+    try {
+      const res = await fetch("http://localhost:5000/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: name, // backend expects "username"
+          email,
+          password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message || "Signup failed");
+        return;
+      }
+
+      setSuccess("Signup successful! Redirecting to login...");
+      setTimeout(() => navigate("/login"), 1500);
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong. Try again.");
+    }
   };
 
   return (
@@ -45,6 +72,7 @@ export default function SignupPage() {
             onChange={(e) => setName(e.target.value)}
             className="input input-bordered w-full border-yellow-300 focus:border-yellow-500 text-yellow-900"
             whileFocus={{ scale: 1.02, boxShadow: "0px 0px 8px rgba(250,204,21,0.5)" }}
+            required
           />
           <motion.input
             type="email"
@@ -53,6 +81,7 @@ export default function SignupPage() {
             onChange={(e) => setEmail(e.target.value)}
             className="input input-bordered w-full border-yellow-300 focus:border-yellow-500 text-yellow-900"
             whileFocus={{ scale: 1.02, boxShadow: "0px 0px 8px rgba(250,204,21,0.5)" }}
+            required
           />
           <motion.input
             type="password"
@@ -61,7 +90,10 @@ export default function SignupPage() {
             onChange={(e) => setPassword(e.target.value)}
             className="input input-bordered w-full border-yellow-300 focus:border-yellow-500 text-yellow-900"
             whileFocus={{ scale: 1.02, boxShadow: "0px 0px 8px rgba(250,204,21,0.5)" }}
+            required
           />
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {success && <p className="text-green-600 text-sm">{success}</p>}
           <motion.button
             type="submit"
             className="btn bg-yellow-500 hover:bg-yellow-600 text-white w-full mt-4 shadow-lg"
