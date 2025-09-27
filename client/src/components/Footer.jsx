@@ -16,7 +16,7 @@ export default function Footer() {
         transition={{ repeat: Infinity, duration: 6 }}
       />
       <motion.div
-        className="absolute w-36 h-36 bg-yellow-300 rounded-full opacity-15 bottom-[-40px] right-[-40px] z-0"
+        className="absolute w-30 h-36 bg-yellow-300 rounded-full opacity-15 bottom-[-40px] right-[-0px] z-0"
         animate={{ y: [0, -15, 0] }}
         transition={{ repeat: Infinity, duration: 5 }}
       />
@@ -30,19 +30,7 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Navigation Links */}
-        <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
-          {["Home", "Services", "Pricing", "Contact"].map((link) => (
-            <MotionLink
-              key={link}
-              to={link === "Home" ? "/" : `/${link.toLowerCase()}`}
-              className="text-yellow-800 font-medium hover:text-yellow-900 transition-colors duration-200"
-              whileHover={{ scale: 1.1 }}
-            >
-              {link}
-            </MotionLink>
-          ))}
-        </div>
+    
 
         {/* Social Icons */}
         <div className="flex space-x-4">

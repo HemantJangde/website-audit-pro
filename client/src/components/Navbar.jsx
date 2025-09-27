@@ -9,7 +9,7 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="navbar bg-yellow-100/50 sticky top-0 z-50 shadow-lg backdrop-blur-md px-6 py-4">
+    <nav className="navbar  bg-yellow-100/50 sticky top-0 z-50 shadow-lg backdrop-blur-md px-6 py-4">
       {/* Logo */}
       <div className="flex-1">
         <Link
